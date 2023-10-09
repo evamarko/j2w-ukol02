@@ -4,18 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class MainController {
     private final Random random = new Random();
+    private final int NUM_OF_ITEMS = 8;
+    private final String FILE_NAME = "citaty.txt";
 
     private static List<String> readAllLines(String resource)throws IOException {
         ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
@@ -27,10 +29,10 @@ public class MainController {
 
     @GetMapping("/")
     public ModelAndView textAndPicture() throws IOException {
-        int randomNumber = random.nextInt(8) + 1;
+        int randomNumber = random.nextInt(NUM_OF_ITEMS) + 1;
         ModelAndView result = new ModelAndView("index");
         result.addObject("picture", String.format("/images/picture%d.jpg", randomNumber));
-        result.addObject("text", readAllLines("citaty.txt").get(randomNumber - 1));
+        result.addObject("text", readAllLines(FILE_NAME).get(randomNumber - 1));
         return result;
     }
 }
