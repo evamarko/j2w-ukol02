@@ -29,10 +29,12 @@ public class MainController {
 
     @GetMapping("/")
     public ModelAndView textAndPicture() throws IOException {
-        int randomNumber = random.nextInt(NUM_OF_ITEMS) + 1;
+        int randomNumPicture = random.nextInt(NUM_OF_ITEMS) + 1;
+        int listSize = readAllLines(FILE_NAME).size();
+        int randomNumText = random.nextInt(listSize) + 1;
         ModelAndView result = new ModelAndView("index");
-        result.addObject("picture", String.format("/images/picture%d.jpg", randomNumber));
-        result.addObject("text", readAllLines(FILE_NAME).get(randomNumber - 1));
+        result.addObject("picture", String.format("/images/picture%d.jpg", randomNumPicture));
+        result.addObject("text", readAllLines(FILE_NAME).get(randomNumText - 1));
         return result;
     }
 }
